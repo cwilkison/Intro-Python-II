@@ -63,34 +63,54 @@ player = Player('Cole', room['outside'])
 # Write a loop that:
 #
 while True:
-    command = input("Where you going n, e, s, w? press 'f' to find, 'p' to pickup, 'd' to drop, 'i' for inventory and 'q' to quit: ")
-    if command == "n":
-        if player.current_room.n_to == None:
-            print(" Can't go that way!")
-            continue 
-        player.current_room = player.current_room.n_to
-    elif command == "e":
-        if player.current_room.e_to == None:
-            print(" Can't go that way!")
-            continue
-        player.current_room = player.current_room.e_to
-    elif command == "s":
-        if player.current_room.s_to == None:
-            print(" Can't go that way!")
-            continue
-        player.current_room = player.current_room.s_to
-    elif command == "w":
-        if player.current_room.w_to == None:
-            print(" Can't go that way!")
-            continue
-        player.current_room = player.current_room.w_to
-    elif command == "f":
-        player.current_room.print_items()     
-    elif command == "i":
-        player.inventory()
-    elif command == "q":
-        print("You Quit")
-        break
+    command = input("Where you going n, e, s, w? press 'f' to find, 'i' for inventory and 'q' to quit: ")
+    command_input = command.lower().split(' ')
+    if len(command_input) == 1:
+        if command == "n":
+            if player.current_room.n_to == None:
+                print(" Can't go that way!")
+                continue 
+            player.current_room = player.current_room.n_to
+        elif command == "e":
+            if player.current_room.e_to == None:
+                print(" Can't go that way!")
+                continue
+            player.current_room = player.current_room.e_to
+        elif command == "s":
+            if player.current_room.s_to == None:
+                print(" Can't go that way!")
+                continue
+            player.current_room = player.current_room.s_to
+        elif command == "w":
+            if player.current_room.w_to == None:
+                print(" Can't go that way!")
+                continue
+            player.current_room = player.current_room.w_to
+        elif command == "f":
+            player.current_room.search()     
+        elif command == "i":
+            player.inventory()
+        elif command == "q":
+            print("You Quit")
+            break
+    elif len(command_input) == 2:
+        if command_input[0] in ['get', 'take']:
+            if items[command_input[1]]:
+                player.pickup_item(items[command_input[1]])
+                print(f"You picked up an item.")
+            else:
+                print(f"There is not item name {command_input[1]}")
+        elif command_input[0] == 'drop':
+            if items[command_input[1]]:
+                player.drop_item(items[command_input[1]])
+                print("You dropped an item.")
+            else:
+                print(f"There is no item named {command_input[1]}")
+        else:
+            print("Not a valid command")
+    else:
+        print("Not a valid command")
+
     print(player.current_room)
 
 # * Prints the current room name

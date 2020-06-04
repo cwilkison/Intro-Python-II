@@ -14,7 +14,7 @@ class Room:
     def __str__(self):
         return f'Room: {self.name}, Description: {self.description}'
    
-    def print_items(self):
+    def search(self):
         if not self.items:
             print('There are no items here.')
         else:

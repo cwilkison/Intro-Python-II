@@ -1,3 +1,5 @@
+from item import Item
+
 # Write a class to hold player information, e.g. what room they are in
 # currently.
 
@@ -14,19 +16,19 @@ class Player:
         if not self.items:
             print("inventory empty")
         else:
+            print("Inventory: ")
             for item in self.items:
-                return f"You are carrying: {item}" 
+                print(item.name)
     
-    def get_item(self, item):
-        if len(self.current_room.items) > 0:
+    def pickup_item(self, item):
+        if self.current_room.items.count(item) > 0:
             self.items.append(item)
             self.current_room.items.remove(item)
-            return f"You picked up {item}"
+            item.on_take()
         else:
             return f"No items here"
 
     def drop_item(self, item):
-        if len(self.item) > 0:
-            self.items.remove(item)
-            self.current_room.items.append(item)
-            return f"You dropped {item}"
+        self.items.remove(item)
+        self.current_room.items.append(item)
+        item.on_drop()
