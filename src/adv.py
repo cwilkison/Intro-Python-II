@@ -1,5 +1,16 @@
 from room import Room
 from player import Player
+from item import Item
+# Declare Items
+
+items = {
+    "sword": Item("sword", "a rusty sword"),
+    "coins": Item("coins", "a pile of coins"),
+    "axe": Item("axe", "a mighty axe"),
+    "necklace": Item("necklace", "very shiny and bright!")
+}
+
+
 
 # Declare all the rooms
 
@@ -23,6 +34,13 @@ earlier adventurers. The only exit is to the south."""),
 }
 
 
+# Add items to rooms
+room['foyer'].items.append(items['sword'])
+room['outside'].items.append(items['axe'])
+room['narrow'].items.append(items['necklace'])
+room['overlook'].items.append(items['coins'])
+
+
 # Link rooms together
 
 room['outside'].n_to = room['foyer']
@@ -44,39 +62,42 @@ player = Player('Cole', room['outside'])
 
 # Write a loop that:
 #
-
 while True:
-    direction = input("Where you going n, e, s, w? press 'q' to quit: ")
-    if direction == "n":
-        if player.current_room == None:
+    command = input("Where you going n, e, s, w? press 'f' to find, 'p' to pickup, 'd' to drop, 'i' for inventory and 'q' to quit: ")
+    if command == "n":
+        if player.current_room.n_to == None:
+            print(" Can't go that way!")
             continue 
         player.current_room = player.current_room.n_to
-    elif direction == "e":
-        if player.current_room == None:
+    elif command == "e":
+        if player.current_room.e_to == None:
+            print(" Can't go that way!")
             continue
         player.current_room = player.current_room.e_to
-    elif direction == "s":
-        if player.current_room == None:
+    elif command == "s":
+        if player.current_room.s_to == None:
+            print(" Can't go that way!")
             continue
         player.current_room = player.current_room.s_to
-    elif direction == "w":
-        if player.current_room == None:
+    elif command == "w":
+        if player.current_room.w_to == None:
+            print(" Can't go that way!")
             continue
         player.current_room = player.current_room.w_to
-    elif direction == "q":
-        print("You quit!")
+    elif command == "f":
+        player.current_room.print_items()     
+    elif command == "i":
+        player.inventory()
+    elif command == "q":
+        print("You Quit")
         break
-    else:
-        print("Please choose a direction")
-
     print(player.current_room)
-
 
 # * Prints the current room name
 # * Prints the current description (the textwrap module might be useful here).
 # * Waits for user input and decides what to do.
 #
-# If the user enters a cardinal direction, attempt to move to the room there.
+# If the user enters a cardinal command, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
